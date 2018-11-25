@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="从入口谈起SelfVue让我们简单来看看一个SelfVue该长的样子：1234567891011121314151617new SelfVue(&amp;#123;    el: &apos;#app&apos;,    data: &amp;#123;        title: 0,        name: &apos;bingwen&apos;    &amp;#125;,    methods: &amp;#123;        clickMe: func">
+<meta name="description" content="&amp;emsp;&amp;emsp;本文续上一篇的Vue响应式原理后续，上篇着重讲述了Vue的设计模式和功能模块，本文将着重于Vue本身的构建和指令的解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue响应式原理(2)">
 <meta property="og:url" content="http://yoursite.com/2018/11/25/vue-Response-2/index.html">
 <meta property="og:site_name" content="丶我不是云玩家">
-<meta property="og:description" content="从入口谈起SelfVue让我们简单来看看一个SelfVue该长的样子：1234567891011121314151617new SelfVue(&amp;#123;    el: &apos;#app&apos;,    data: &amp;#123;        title: 0,        name: &apos;bingwen&apos;    &amp;#125;,    methods: &amp;#123;        clickMe: func">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本文续上一篇的Vue响应式原理后续，上篇着重讲述了Vue的设计模式和功能模块，本文将着重于Vue本身的构建和指令的解析">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-25T07:53:15.926Z">
+<meta property="og:image" content="http://yoursite.com/blog/images/vue-Response/data.png">
+<meta property="og:updated_time" content="2018-11-25T09:10:59.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue响应式原理(2)">
-<meta name="twitter:description" content="从入口谈起SelfVue让我们简单来看看一个SelfVue该长的样子：1234567891011121314151617new SelfVue(&amp;#123;    el: &apos;#app&apos;,    data: &amp;#123;        title: 0,        name: &apos;bingwen&apos;    &amp;#125;,    methods: &amp;#123;        clickMe: func">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文续上一篇的Vue响应式原理后续，上篇着重讲述了Vue的设计模式和功能模块，本文将着重于Vue本身的构建和指令的解析">
+<meta name="twitter:image" content="http://yoursite.com/blog/images/vue-Response/data.png">
 
 
 
@@ -301,7 +303,8 @@
       
 
       
-        <h2 id="从入口谈起SelfVue"><a href="#从入口谈起SelfVue" class="headerlink" title="从入口谈起SelfVue"></a>从入口谈起SelfVue</h2><p>让我们简单来看看一个SelfVue该长的样子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> SelfVue(&#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">        title: <span class="number">0</span>,</span><br><span class="line">        name: <span class="string">'bingwen'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        clickMe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.title ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.title = <span class="number">10</span>;</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+        <p><img src="/blog/images/vue-Response/data.png" width="600px"><br>&emsp;&emsp;本文续上一篇的Vue响应式原理后续，上篇着重讲述了Vue的设计模式和功能模块，本文将着重于Vue本身的构建和指令的解析<br><a id="more"></a></p>
+<h2 id="从入口谈起SelfVue"><a href="#从入口谈起SelfVue" class="headerlink" title="从入口谈起SelfVue"></a>从入口谈起SelfVue</h2><p>让我们简单来看看一个SelfVue该长的样子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> SelfVue(&#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">        title: <span class="number">0</span>,</span><br><span class="line">        name: <span class="string">'bingwen'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        clickMe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.title ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.title = <span class="number">10</span>;</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>_el_： 要应用的整个文档元素</li>
 <li><em>data</em>： 需监听的数据对象</li>
