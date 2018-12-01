@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;代码风格、代码风格、代码风格！重要的事说三遍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS的函数式编程(1)">
+<meta property="og:url" content="http://yoursite.com/2018/11/27/funFormul/index.html">
+<meta property="og:site_name" content="丶我不是云玩家">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;代码风格、代码风格、代码风格！重要的事说三遍">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/blog/images/code.JPEG">
+<meta property="og:updated_time" content="2018-12-01T13:00:13.844Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS的函数式编程(1)">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;代码风格、代码风格、代码风格！重要的事说三遍">
+<meta name="twitter:image" content="http://yoursite.com/blog/images/code.JPEG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/27/funFormul/">
+
+
+
+
+
+  <title>JS的函数式编程(1) | 丶我不是云玩家</title>
+  
+
+
+
+
+
+
+
+
+</head>
+<div class="headband"></div>
+<a href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+  <div class="container sidebar-position-left page-post-detail">
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">丶我不是云玩家</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/blog/2018/11/27/funFormul/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gusiil">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="丶我不是云玩家">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS的函数式编程(1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-27T14:13:56+08:00">
+                2018-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/blog/images/code.JPEG" width="400px"><br>&emsp;&emsp;代码风格、代码风格、代码风格！重要的事说三遍<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于JavaScript，我的第一印象就是爽，是的，很爽。简单明了的对象操作，灵活多变的类型声明，真的是写得超级舒服。然而过于灵活调皮的写法和楼外楼似得嵌套以及到处乱跳的this，不仅在调试时候糟心无比，也让后续的维护困难重重。甚至2个星期后，你会指着自己曾经的代码，破口大骂：“MDZZCode”（源自我曾经800kb的Js文件）因此，我尝试了解了下函数式编程，毕竟人要衣装，码要精装</p>
+<h2 id="函数式编程的世界"><a href="#函数式编程的世界" class="headerlink" title="函数式编程的世界"></a>函数式编程的世界</h2><blockquote>
+<p>函数的第一条原则是要小。函数的第二条原则是要更小</p>
+</blockquote>
+<p>我们来个简单的例子：计算一个数组里的所有数的平方和<br>第一种写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> num <span class="keyword">of</span> arr)&#123;</span><br><span class="line">    sum += num*num</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二种写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sum = arr.reduce(<span class="function">(<span class="params">sum, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> sum + next*next</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>很容易看出，第一种很明确得告诉了程序，你先怎么做，然后怎么做，最后返回什么。第二种则是告诉系统我想要什么。第一种就是命令式的写法，这种写法要时刻关心所有细节。第二种则是声明式写法，声明式意味着我们应该写表达式，而不是一步一步的指示和操作。<br>这里我们引入个很简单概念，纯函数：对于给定的输入，纯函数都会返回相同的输出。其实纯函数是一个用代码完成的数学表达式。所以，对于你给定的1和2，加法运算绝对会给你返回3<br>纯函数能使我们完成了<strong><em>可缓存性</em></strong>、<strong><em>可测试性</em></strong>、<strong><em>合理性</em></strong>、<strong>_并行_</strong>的代码设计，也使得声明式的代码有了很强的拓展性<br>可缓存性：我们来简单缓存一个平方运算<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> memoize = <span class="function">(<span class="params">fn</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> cache = &#123;&#125;;</span><br><span class="line">	<span class="keyword">return</span> <span class="function">(<span class="params">...arg</span>) =&gt;</span> cache[arg] || cache[arg] = fn(arg);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> squareNumber = memoize(<span class="function">(<span class="params">x</span>) =&gt;</span> &#123; <span class="keyword">return</span> x*x; &#125;);</span><br><span class="line">squareNumber(<span class="number">4</span>) <span class="comment">// 16</span></span><br><span class="line">squareNumber(<span class="number">4</span>) <span class="comment">//</span></span><br></pre></td></tr></table></figure></p>
+<p>可测试性、引用透明性：因为对于给定的输入，固定返回确定的输出。纯函数可以断言输出、四处引用。<br>从数学的角度上来说，纯函数就是几个简单的运算表达式，我们可以将多个纯函数组合起来，就形成了高阶函数，就可以处理更复杂的业务和逻辑,下面，我们来聊聊组成各种高阶函数的技巧</p>
+<h2 id="函数的柯里化-curry"><a href="#函数的柯里化-curry" class="headerlink" title="函数的柯里化(curry)"></a>函数的柯里化(curry)</h2><blockquote>
+<p>柯里化（英语：Currying），又译为卡瑞化或加里化，是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术</p>
+</blockquote>
+<p>对于上面的阶层和，我们再来加个需求：现在，我需要有个基础数，函数返回的值应该加上这个基础数。<br>对于这个需求，我们可以这样柯里化：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sumFun = <span class="function">(<span class="params">base</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> base + arr.reduce(<span class="function">(<span class="params">sum, next</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> sum +next*next;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> sumFun10 = sumFun(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">const</span> sumFun20 = sumFun(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">sumFun10([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</span><br><span class="line">sumFun20([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</span><br></pre></td></tr></table></figure></p>
+<p><code>也许你已经发现了，如果你的代码是纯正的函数式编程，那你的任何变量，都可以用const声明。</code><br>事实上，柯里化是一种”预加载”函数的方法，我们传递了较少的参数，得到了一个已经记住了这些参数的新函数，我们可以在调用新函数时，就可以已经被记住了的参数。柯里化是对参数进行了缓存，是一种非常高效的函数编写方法。<br>我们来写一个通用的柯里化函数，值得关注的是，柯里化定义为单一参数的函数，因此，我们下面的函数会处理多入参函数的柯里化<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> curry = <span class="function">(<span class="params">fn</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">curryFun</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> args.length &lt; fn.length ? </span><br><span class="line">			(...arg) =&gt; curryFun.apply(<span class="literal">null</span>, args.concat(arg)) : </span><br><span class="line">			fn.apply(<span class="literal">null</span>, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们来试一手<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dealDate = <span class="function">(<span class="params">x, y, z</span>) =&gt;</span> x * y + z</span><br><span class="line">curry(dealDate)(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>) <span class="comment">// 5</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="函数组合"><a href="#函数组合" class="headerlink" title="函数组合"></a>函数组合</h2><p>另外一个技巧就是函数组合，以下就是个很简单的组合函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> compose = <span class="function">(<span class="params">f, g</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function">(<span class="params">x</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> f(g(x));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>f和g都是函数，x这是在它们”管道”传输的值。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> squareNumber = <span class="function">(<span class="params">arr</span>) =&gt;</span> </span><br><span class="line">	arr.reduce(<span class="function">(<span class="params">sum, next</span>) =&gt;</span> </span><br><span class="line">		sum + next*next;)</span><br><span class="line"><span class="keyword">const</span> sum10 = <span class="function">(<span class="params">num</span>) =&gt;</span> <span class="number">10</span> + num;</span><br><span class="line"></span><br><span class="line">compose(sum10, squareNumber)([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);</span><br></pre></td></tr></table></figure></p>
+<p>然而我们编程世界并不会这么简单，我们会需要多个函数进行处理，在每个函数中，我们还会传入多个参数，那上面的compose就完全不适用了，不仅不支持多个函数，还不支持多个入参。下面我们来进行第一步改造，让它支持多个函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> compose = <span class="function">(<span class="params">...fns</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function">(<span class="params">x</span>) =&gt;</span> </span><br><span class="line">		fns.reduce(<span class="function">(<span class="params">acc, fn</span>) =&gt;</span> fn(acc), x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们先来试试<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add1 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> add2 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> add3 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">compose(add1, add2, add3)(<span class="number">0</span>) <span class="comment">//6</span></span><br></pre></td></tr></table></figure></p>
+<p>第二步，我们来让它支持多个入参，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;</span><br><span class="line"><span class="keyword">const</span> less = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x - y;</span><br><span class="line"></span><br><span class="line">compose(curry(add)(<span class="number">1</span>), curry(less))(<span class="number">10</span>)(<span class="number">10</span>) <span class="comment">//1</span></span><br></pre></td></tr></table></figure></p>
+<p>没错，用个简单的柯里化函数，就能让它支持复杂的多入参架构，但是得注意的是，传入的第一个函数中（即组合函数compose首次运行的函数），我们用柯里化记住了第一个入参x，这是因为在写compose函数时，我们写死了入参的个数。此处你可尽情思考下，如何改装compose函数，使得compose变成更具可读性的<code>compose(curry(add), curry(add))(1)(10)(10)</code></p>
+<h2 id="Point-Free"><a href="#Point-Free" class="headerlink" title="Point Free"></a>Point Free</h2><p>此处我只是简单的介绍一下<code>本来是打算根本没写的，后来觉得篇幅过少，强行加上的</code>。<br>Point Free暂无中文翻译，参考下英文文档，直译可以当做：一种不用中间变量的代码风格。<br>关于这点，我是持着仁者见仁，智者见智的看法，也没对此进行深入的了解，因此不做过多解释<code>没有调查，就没有发言权</code>，在此，我贴出<a href="http://www.ruanyifeng.com/blog/2017/03/pointfree.html" target="_blank" rel="noopener">阮一峰的日志教程</a>，仅供想了解和学习的人一个入口。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>本文干货较多，对于很多概念性的东西都是略作或者不做解释和涉及，本文的重点就是最后的柯里化函数curry和组合函数compose。但是实际的编程世界并不会像数学世界那么纯粹，Ajax、dom操作、网络操作等，都是JS会经常接触处理的，这些都会带来很明显的”副作用”，因此，在下文中，我会给出本次compose的进阶组装和Functor、Monad等概念。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/11/25/vue-Response-2/" rel="next" title="Vue响应式原理(2)">
+                <i class="fa fa-chevron-left"></i> Vue响应式原理(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Gusiil</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数式编程的世界"><span class="nav-number">2.</span> <span class="nav-text">函数式编程的世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数的柯里化-curry"><span class="nav-number">3.</span> <span class="nav-text">函数的柯里化(curry)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数组合"><span class="nav-number">4.</span> <span class="nav-text">函数组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Point-Free"><span class="nav-number">5.</span> <span class="nav-text">Point Free</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在最后"><span class="nav-number">6.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gusiil</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+  </div>
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="true"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+	
+	
+</body>
+</html>
