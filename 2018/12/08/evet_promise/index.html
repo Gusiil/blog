@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;透过JS看世界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件循环(Event Loop)和Promise">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/evet_promise/index.html">
+<meta property="og:site_name" content="丶我不是云玩家">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;透过JS看世界">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/blog/images/code.JPEG">
+<meta property="og:image" content="http://yoursite.com/blog/images/Event/step.jpg">
+<meta property="og:image" content="http://yoursite.com/blog/images/Event/Loop.jpg">
+<meta property="og:image" content="http://yoursite.com/blog/images/Event/prom1.jpg">
+<meta property="og:image" content="http://yoursite.com/blog/images/Event/code1.jpg">
+<meta property="og:updated_time" content="2018-12-09T06:43:21.322Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="事件循环(Event Loop)和Promise">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;透过JS看世界">
+<meta name="twitter:image" content="http://yoursite.com/blog/images/code.JPEG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/evet_promise/">
+
+
+
+
+
+  <title>事件循环(Event Loop)和Promise | 丶我不是云玩家</title>
+  
+
+
+
+
+
+
+
+
+</head>
+<div class="headband"></div>
+<a href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+  <div class="container sidebar-position-left page-post-detail">
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">丶我不是云玩家</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/blog/2018/12/08/evet_promise/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gusiil">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="丶我不是云玩家">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">事件循环(Event Loop)和Promise</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T16:27:56+08:00">
+                2018-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/blog/images/code.JPEG" width="500px"><br>&emsp;&emsp;透过JS看世界</p>
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本来是打算继续整理函数式编程，着手第二篇的，写着写着，咦？Monad的确和Promise很像，都是嵌套地狱的解决方案，实际上，我认为Promise就是Monad的一种实现，因此我整理了一下Promise，重新写出了这篇文章，并将它和Event Loop放在了一起</p>
+<h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><p>首先先温习下进程和线程：</p>
+<blockquote>
+<p>进程（Process）：计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。<br>线程(thread)：有时被称为轻量进程(Lightweight Process，LWP），是程序执行流的最小单元。</p>
+</blockquote>
+<p>以上的解释都太官方和难以理解，我们来类比一下：</p>
+<p>计算机的核心CPU其实是一座工厂，它时刻工作着（除非带着小姨子跑路了）<br>工厂电力有限，一次只能供给一个车间</p>
+<pre><code>单个CPU运行单个进程，其余进程均处于待机
+</code></pre><p>一个车间有很多工人，共同完成一项任务</p>
+<pre><code>一个进程包含多个进程
+</code></pre><p>车间的空间是共享的，但各个房间的大小是不一样的</p>
+<pre><code>进程的内存空间是功效的，但是内存都是有使用限制的
+</code></pre><p>有的房间很小，比如厕所，只能容忍一个人，后来的人通过门上的颜色标记自然知道里面是否有人。有的很大，比如厨房，可以有多个人一起工作；我们给厨房大门放很多钥匙，进一个，拿一个，然后锁门，后来的人自然可以通过钥匙的数量知道里面是否可入。</p>
+<pre><code>防止多线程读写同一内存的方法叫&quot;互斥锁&quot;（Mutex），控制同一内存读写的线程数量，保证多个线程不会冲突方法叫做&quot;信号量&quot;(Semaphore)
+</code></pre><p>总结： 操作系统的设计，简单的归结三点：</p>
+<ol>
+<li>多进程，允许多个任务的同时运行；</li>
+<li>多线程，运行单个任务多个部分的同时运行</li>
+<li>协调机制，协调冲突和资源共享</li>
+</ol>
+<h2 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h2><p>现在，回到我们的JS中，JavaScript是一门单线程的语言，因为涉及到用户交互、DOM操作等，因此JS需要单线程来设计。但是，Js是单线程的，<em><strong>浏览器是多线程的</strong></em>。<br>我们来看看一些浏览器的常驻线程：</p>
+<p>渲染引擎线程：负责页面的渲染<br>JS引擎线程：负责JS的解析和执行（本文说的主线程就指js引擎线程）<br>定时器触发线程：处理定时事件，比如setTimeout, setInterval<br>事件触发线程：处理DOM事件<br>异步http请求线程：处理http请求<br>……</p>
+<p>由于Javascript 是单线程，它需要借助异步完成耗时或者时间不确定的操作，这些操作由浏览器的其它线程执行，这形成了异步事件驱动。异步事件驱动往往由浏览器的两个或以上常驻线程共同完成的。例如ajax异步请求是由JS执行线程和异步http请求线程共同完成的。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><p>Event Loop已经涉及到了JavaScript的运行机制，我们用一句话来描述Js的运行机制<br>    JavaScript的事件分为同步任务和异步任务，遇到同步任务就放在执行栈中执行，遇到异步任务就放到任务队列中，等到执行栈执行完毕之后再去执行队列之中的事件<br>下面，我们来一步一步的解析这句话</p>
+<p><strong>每一个线程只有一个栈，每一个程序只有一个堆。</strong></p>
+<p>JS函数调用时，会形成一个栈帧<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x * y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printSquare</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> s = multiply(x, x);</span><br><span class="line">    <span class="built_in">console</span>.log(s);</span><br><span class="line">&#125;</span><br><span class="line">printSquare(<span class="number">5</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="/blog/images/Event/step.jpg" width="800px"><br>每次函数调用都会在栈中创建一个保存函数参数、局部变量的帧，当函数return时就释放这个帧。<br>堆则放着对象的具体内容，一般来说，栈内存中存放的是存储对象的地址，而堆内存中存放的是存储对象的具体内容。<br>JS运行时包含了一个待处理的消息队列。队列中的每一个消息都与一个函数关联。消息分为两种：</p>
+<ol>
+<li>同步：在主线程排队执行任务。</li>
+<li>异步：该任务不进入主线程，而进入任务队列(即消息队列)。当执行栈清空时，消息队列的回调函数自动进入主线程。</li>
+</ol>
+<h3 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h3><p>由于Js单线程运行，代码块中的每一个都阻止着其他异步事件的进度。这意味着当异步事件发生时（点击事件、定时器触发、ajax请求完成），它都将排队进入空的执行栈。</p>
+<ol>
+<li>所有的同步任务，都在主线程上执行，这就是执行栈。</li>
+<li>当遇到异步任务时，就在消息队列中添加一个事件，这个事件对应着该异步任务的回调函数</li>
+<li>执行栈中的所有同步任务执行完毕后，系统会读取消息队列，进入执行栈，开始执行</li>
+<li>主线程不断重复第三步</li>
+</ol>
+<p>这就是事件循环<br><img src="/blog/images/Event/Loop.jpg" width="800px"></p>
+<h3 id="练习理解"><a href="#练习理解" class="headerlink" title="练习理解"></a>练习理解</h3><p>现在，我们来试试你是否真正理解到了事件循环<br>一、以下代码输入什么？<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'a'</span>)</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'b'</span>);</span><br><span class="line">  &#125;, <span class="number">500</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">  foo()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>二、ajax异步请求是怎么工作的？（提示：HTTP请求线程、消息队列）</p>
+<p>好了，现在请你认真思考5min。</p>
+<p>1min。。。。。。</p>
+<p>2min。。。。。。</p>
+<p>3min。。。。。。</p>
+<p>4min。。。。。。</p>
+<p>5min。。。。。。</p>
+<p>答案：<br>一、先输入1000个a，在输入1000个b。原理如下：<br><img src="/blog/images/Event/prom1.jpg" width="800px"></p>
+<p>二、</p>
+<ol>
+<li>主线程发起异步ajax请求，浏览器新开HTTP线程执行请求，主线程继续执行</li>
+<li>当请求完毕（数据完全回来）时，事件触发线程监视到HTTP请求已经完成，将回调函数放入消息队列中</li>
+<li>当主线程清空时（任务执行完毕），扫描消息队列的回调，依次放入执行栈中处理</li>
+</ol>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><p>有了Event Loop的基础，我觉得理解Promise就水到渠成了，下面我们来看看这个炙手可热的对象</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Promise是异步编程的解决方案，比于传统的回调事件更为合理和强大。<br>它有以下两个特点：</p>
+<ol>
+<li>对象的状态不受外界影响。Promise有三种状态：pending、fulfilled、rejected，状态具体决定都基于异步操作的结果</li>
+<li>状态一旦改变，就不会再变。Promise会一直保存改变后的状态，保证你可以一直访问它，这与事件完全不同，事件一旦错过监听，就再也无法访问了</li>
+</ol>
+<p>Promise的存在，使得层层嵌套的回调异步写法变成了同步的写法，通过Promise统一的API，还可以使你的异步操作更为简单明了</p>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p>我们直接写一个异步来看看Promise<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> timeout = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">	setTimeout(resolve, <span class="number">3000</span>, <span class="string">'done'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Promise声明即执行。如果你不想它立刻执行，可以将他放在一个函数中。<br>我们来看看他的状态<br><img src="/blog/images/Event/code1.jpg" width="800px" style=""><br>我们现在来给它一个回调（注意！我们是在异步完成之后再做的监听）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">timeout.then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"I`m: "</span> + value))</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"hello"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//I`m done</span></span><br><span class="line">   <span class="comment">//Promise &#123;&lt;resolved&gt;: "hello"&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>Promise的用法就这么简单，你只需要new一下它，并传入你的异步操作和回调声明。Promise声明即执行，之后你可以传入then来处理回调结果，传入catch来处理异常<code>catch其实是.then(null, reject)的别名</code>。并且你也发现了，.then方法返回的也是个Promise，所有你可以随意的then下去，并且可以灵活处理多异步嵌套。如下，我们来讲timeout封装一下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> timeout = <span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">		setTimeout(resolve, <span class="number">1000</span>, v);	</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">return</span> promise;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">timeout(<span class="string">"first"</span>)</span><br><span class="line">	.then(<span class="function">(<span class="params">v</span>) =&gt;</span> timeout(v + <span class="string">"-second"</span>))</span><br><span class="line">	.then(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">console</span>.log(v))</span><br><span class="line">	.catch(<span class="function">(<span class="params">e</span>) =&gt;</span> <span class="built_in">console</span>.assert(<span class="literal">null</span>, e))</span><br><span class="line"><span class="comment">//两秒后 - first-second</span></span><br></pre></td></tr></table></figure></p>
+<p>有了Promise，我们编写异步代码可以更为容易更具可读性，下面，我们来看看Promise的其他API</p>
+<h3 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> timeout = <span class="function">(<span class="params">v, t</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">		setTimeout(resolve, t, v);	</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">return</span> promise;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.all([timeout(<span class="string">"Hello"</span>, <span class="number">1000</span>), timeout(<span class="string">", Word"</span>, <span class="number">2000</span>)])</span><br><span class="line">	.then(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">console</span>.log(v.join(<span class="string">''</span>)))</span><br><span class="line">	.catch(<span class="function">(<span class="params">e</span>) =&gt;</span> <span class="built_in">console</span>.assert(<span class="literal">null</span>, e))</span><br><span class="line"><span class="comment">//两秒后 - Hello, Word</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>只有all数组的所有Prmoise状态都变成fulfilled，最外层的Promise的状态才会变成fulfilled，并在then中接收all的返回值数组。</li>
+<li>只要all数组中有一个被rejected，最外层的Promise变成rejected，catch会捕获第一个rejected并传递。</li>
+</ol>
+<h3 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race()"></a>Promise.race()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.race([timeout(<span class="string">"Hello"</span>, <span class="number">1000</span>), timeout(<span class="string">", Word"</span>, <span class="number">2000</span>)])</span><br><span class="line">	.then(<span class="function">(<span class="params">v</span>) =&gt;</span> <span class="built_in">console</span>.log(v.join(<span class="string">''</span>)))</span><br><span class="line">	.catch(<span class="function">(<span class="params">e</span>) =&gt;</span> <span class="built_in">console</span>.assert(<span class="literal">null</span>, e))</span><br><span class="line"><span class="comment">//一秒后 - Hello</span></span><br></pre></td></tr></table></figure>
+<p>只要race数组的有一个Prmoise状态率先改变（不管变化状态），最外层的Promise的状态马上变成改状态，并在then/catch中接收该返回值。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>Promise的回调机制使得异步编程有了同步的写法，我们还可以结合事件循环来看看Promise，相信你一定有更深的理解</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/11/27/funFormul/" rel="next" title="JS的函数式编程(1)">
+                <i class="fa fa-chevron-left"></i> JS的函数式编程(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Gusiil</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程"><span class="nav-number">2.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-Loop"><span class="nav-number">3.</span> <span class="nav-text">Event Loop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关概念"><span class="nav-number">3.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行机制"><span class="nav-number">3.2.</span> <span class="nav-text">运行机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习理解"><span class="nav-number">3.3.</span> <span class="nav-text">练习理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise"><span class="nav-number">4.</span> <span class="nav-text">Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">4.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本语法"><span class="nav-number">4.2.</span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-all"><span class="nav-number">4.3.</span> <span class="nav-text">Promise.all()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-race"><span class="nav-number">4.4.</span> <span class="nav-text">Promise.race()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在最后"><span class="nav-number">5.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gusiil</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+  </div>
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="true"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+	
+	
+</body>
+</html>

@@ -89,7 +89,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;代码风格、代码风格、代码风格！重要的事说三遍">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/blog/images/code.JPEG">
-<meta property="og:updated_time" content="2018-12-01T13:02:20.555Z">
+<meta property="og:updated_time" content="2018-12-08T08:12:03.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JS的函数式编程(1)">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;代码风格、代码风格、代码风格！重要的事说三遍">
@@ -323,7 +323,7 @@
 <p>然而我们编程世界并不会这么简单，我们会需要多个函数进行处理，在每个函数中，我们还会传入多个参数，那上面的compose就完全不适用了，不仅不支持多个函数，还不支持多个入参。下面我们来进行第一步改造，让它支持多个函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> compose = <span class="function">(<span class="params">...fns</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function">(<span class="params">x</span>) =&gt;</span> </span><br><span class="line">		fns.reduce(<span class="function">(<span class="params">acc, fn</span>) =&gt;</span> fn(acc), x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>我们先来试试<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add1 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> add2 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> add3 = <span class="function">(<span class="params">x</span>) =&gt;</span> x+<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">compose(add1, add2, add3)(<span class="number">0</span>) <span class="comment">//6</span></span><br></pre></td></tr></table></figure></p>
 <p>第二步，我们来让它支持多个入参，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y;</span><br><span class="line"><span class="keyword">const</span> less = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x - y;</span><br><span class="line"></span><br><span class="line">compose(curry(add)(<span class="number">1</span>), curry(less))(<span class="number">10</span>)(<span class="number">10</span>) <span class="comment">//1</span></span><br></pre></td></tr></table></figure></p>
-<p>没错，用个简单的柯里化函数，就能让它支持复杂的多入参架构，但是得注意的是，传入的第一个函数中（即组合函数compose首次运行的函数），我们用柯里化记住了第一个入参x，这是因为在写compose函数时，我们写死了入参的个数。此处你可尽情思考下，如何改装compose函数，使得compose变成更具可读性的<code>compose(curry(add), curry(add))(1)(10)(10)</code></p>
+<p>没错，用个简单的柯里化函数，就能让它支持复杂的多入参架构。</p>
 <h2 id="Point-Free"><a href="#Point-Free" class="headerlink" title="Point Free"></a>Point Free</h2><p>此处我只是简单的介绍一下<code>本来是打算根本没写的，后来觉得篇幅过少，强行加上的</code>。<br>Point Free暂无中文翻译，参考下英文文档，直译可以当做：一种不用中间变量的代码风格。<br>关于这点，我是持着仁者见仁，智者见智的看法，也没对此进行深入的了解，因此不做过多解释<code>没有调查，就没有发言权</code>，在此，我贴出<a href="http://www.ruanyifeng.com/blog/2017/03/pointfree.html" target="_blank" rel="noopener">阮一峰的日志教程</a>，仅供想了解和学习的人一个入口。</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>本文干货较多，对于很多概念性的东西都是略作或者不做解释和涉及，本文的重点就是最后的柯里化函数curry和组合函数compose。但是实际的编程世界并不会像数学世界那么纯粹，Ajax、dom操作、网络操作等，都是JS会经常接触处理的，这些都会带来很明显的”副作用”，因此，在下文中，我会给出本次compose的进阶组装和Functor、Monad等概念。</p>
 
@@ -359,6 +359,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/12/08/evet_promise/" rel="prev" title="事件循环(Event Loop)和Promise">
+                事件循环(Event Loop)和Promise <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -435,7 +439,7 @@
               
                 <a href="/blog/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
